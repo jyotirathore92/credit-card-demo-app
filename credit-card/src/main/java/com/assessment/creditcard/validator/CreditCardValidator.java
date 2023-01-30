@@ -32,18 +32,19 @@ public class CreditCardValidator implements Validator {
 
 		CreditCardRequestDTO creditCardRequestDTO = (CreditCardRequestDTO) target;
 
-		if (creditCardRequestDTO.getName().isBlank()) {
+		if (creditCardRequestDTO.getName().isEmpty()) {
 			errors.rejectValue(NAME, "Please enter name");
 		}
-		if (creditCardRequestDTO.getCreditCardDetails().getCardNumber().isBlank()) {
+		if (creditCardRequestDTO.getCreditCardDetails().getCardNumber().isEmpty()) {
 			errors.rejectValue(null, "EMPTY");
 		} else if (!creditCardRequestDTO.getCreditCardDetails().getCardNumber().matches("\\d*")) {
 			errors.rejectValue(null, "Invalid characters in credit card number");
 		} else if (creditCardRequestDTO.getCreditCardDetails().getCardNumber().length() > 19) {
 			errors.rejectValue(null, "Invalid credit card number length");
-		} else if (!luhnCheck(creditCardRequestDTO.getCreditCardDetails().getCardNumber())) {
-			errors.rejectValue(null, "Invalid credit card number");
 		}
+//		else if (!luhnCheck(creditCardRequestDTO.getCreditCardDetails().getCardNumber())) {
+//			errors.rejectValue(null, "Invalid credit card number");
+//		}
 
 		if (errors.hasErrors()) {
 			throw new BadRequestException(errors.getAllErrors());
